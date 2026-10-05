@@ -1,0 +1,66 @@
+<%- include('../partials/header') %>
+
+<h1>Produtos</h1>
+
+<a href="/produtos/novo">Novo produto</a>
+
+<form action="/produtos/pesquisa" method="GET" class="pesquisa">
+    <input type="text" name="nome" placeholder="Pesquisar por nome" value="<%= busca %>">
+    <button type="submit">Pesquisar</button>
+    <% if (busca) { %>
+        <a href="/produtos">Limpar</a>
+    <% } %>
+</form>
+
+<% if (categorias.length > 0) { %>
+    <p>
+        Ver por categoria:
+        <% categorias.forEach(c => { %>
+            <a href="/produtos/categoria/<%= c.id %>"><%= c.nome %></a>
+        <% }) %>
+    </p>
+<% } %>
+
+<% if (busca) { %>
+    <p>Resultados para "<%= busca %>": <%= produtos.length %></p>
+<% } %>
+
+<table border="1">
+    <tr>
+        <th>Nome</th>
+        <th>Preço</th>
+        <th>Quantidade</th>
+        <th>Categoria</th>
+        <th>Ações</th>
+    </tr>
+
+    <% produtos.forEach(p => { %>
+        <tr>
+            <td><%= p.nome %></td>
+            <td>R$ <%= p.preco.toFixed(2) %></td>
+            <td><%= p.quantidade %></td>
+            <td>
+                <% if (p.categoria) { %>
+                    <a href="/produtos/categoria/<%= p.categoria.id %>"><%= p.categoria.nome %></a>
+                <% } else { %>
+                    -
+                <% } %>
+            </td>
+            <td>
+                <a href="/produtos/<%= p.id %>/editar">Editar</a>
+
+                <form action="/produtos/<%= p.id %>/deletar" method="POST" style="display:inline">
+                    <button type="submit">Excluir</button>
+                </form>
+            </td>
+        </tr>
+    <% }) %>
+
+    <% if (produtos.length === 0) { %>
+        <tr>
+            <td colspan="5">Nenhum produto encontrado.</td>
+        </tr>
+    <% } %>
+</table>
+
+<%- include('../partials/footer') %>

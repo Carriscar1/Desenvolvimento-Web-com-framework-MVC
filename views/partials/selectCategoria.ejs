@@ -1,0 +1,7 @@
+<label>Categoria:</label>
+<select name="categoriaId">
+    <option value="">Sem categoria</option>
+    <% categorias.forEach(c => { %>
+        <option value="<%= c.id %>" <%= selecionada == c.id ? 'selected' : '' %>><%= c.nome %></option>
+    <% }) %>
+</select>
